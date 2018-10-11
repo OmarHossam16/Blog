@@ -10,7 +10,7 @@
 * CSS
 * Bootstrap
 
-## Before you run the app install these packages by running:
+## Required pip packages:
 
 * bcrypt
 * Flask
@@ -20,7 +20,7 @@
 * Flask-SQLAlchemy
 * Flask-WTF
 
-## Or Simply by running this command where requirements.txt file is located:
+## Or Simply run this command where requirements.txt file is located:
 
 ```
 
