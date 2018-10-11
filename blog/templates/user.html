@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+  <div class="media">
+   {% if user.img %}
+  <a href="{{ url_for('user',username=user.username) }}">
+    <img class="rounded-circle article-img" src="{{ url_for('user_img',user_id=user.id) }}">
+  </a>
+   {% else %}
+    <i class="fa fa-user-circle-o article-img" style="font-size:65px"></i>
+   {% endif %}
+    <div class="media-body">
+      <h2 class="account-heading">{{ user.username }}</h2>
+      <p class="text-secondary">{{ user.email }}</p>
+    </div>
+  </div>
+</div>
+<hr>
+
+{% for post in posts.items %}
+<article class="media content-section mt-5 mb-5">
+  {% if user.img %}
+  <a href="{{ url_for('user',username=user.username) }}">
+    <img class="rounded-circle article-img" src="{{ url_for('user_img',user_id=user.id) }}">
+  </a>
+  {% else %}
+  <i class="fa fa-user-circle-o article-img" style="font-size:65px"></i>
+  {% endif %}
+  <div class="media-body">
+  <div class="article-metadata">
+      <h3><a class="mr-2" href="#">{{ user.username }}</a></h3>
+      <small class="text-secondary">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+  </div>
+  <h2><a class="article-title" href="{{url_for('post',post_id=post.id)}}">{{ post.title }}</a></h2>
+  <p class="article-content">{{ post.content }}</p>
+</div>
+</article>
+{% endfor %}
+<center>
+{% for page in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page %}
+    {% if posts.page == page %}
+      <a class="btn btn-info mb-4" href="{{ url_for('home', page=page) }}">{{ page }}</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page) }}">{{ page }}</a>
+    {% endif %}
+  {% else %}
+    ...
+  {% endif %}
+{% endfor %}
+</center>
+{% endblock content %}

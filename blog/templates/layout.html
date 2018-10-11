@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{title}}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Oswald|Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap4-executive-suite.min.css') }}">
+    <style type="text/css">
+        .carousel-item {
+          height: 65vh;
+          min-height: 300px;
+          background: no-repeat center center scroll;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+        }
+        a:hover {
+          text-decoration: none;
+        }
+        .article-img {
+          height: 65px;
+          width: 65px;
+          margin-right: 16px;
+        }
+        .article-metadata {
+          padding-bottom: 1px;
+          margin-bottom: 4px;
+          border-bottom: 1px solid #e3e3e3
+        }
+        .account-img {
+          height: 125px;
+          width: 125px;
+          margin-right: 20px;
+          margin-bottom: 16px;
+        }
+    
+        .account-heading {
+          font-size: 2.5rem;
+        }
+        .article-content {
+          white-space: pre-line;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+            <a class="navbar-brand" href="#!">BLOG</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <header>
+        <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active" style="background-image: url({{ url_for('static', filename='img/slider_1.jpg') }})">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>Welcome to this Blog</h3>
+                        <p>Feel free to look around !</p>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url({{ url_for('static', filename='img/slider_2.jpg') }})">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>Front End</h3>
+                        <p>HTML CSS JS Bootsrap</p>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url({{ url_for('static', filename='img/slider_3.jpg') }})">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>Back End</h3>
+                        <p>Python MySQL Flask SQLAlchemy</p>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto pt-5 pb-5">
+                <h1 class="display-4 text-center">{{ title }}</h1>
+                <hr class="mt-4 mb-4"> 
+                {% with messages = get_flashed_messages(with_categories=true) %} 
+                  {% if messages %} 
+                    {% for category,message in messages %}
+                <div class="alert alert-{{ category }}">
+                      {{ message }}
+                </div>
+                    {% endfor %} 
+                    {% endif %} 
+                {% endwith %} 
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer font-small bg-dark sticky-bottom">
+        <div class="footer-copyright text-center py-3 text-light">© 2018 Copyright:
+            <a class="text-warning" href="https://linkedin.com/in/devomarhossam/">Omar Hossam</a>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</body>
+
+</html>

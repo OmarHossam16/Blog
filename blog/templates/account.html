@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+  <div class="media">
+   {% if current_user.img %}
+  <a data-toggle="modal" data-target=".img_modal" href="">
+    <img class="rounded-circle account-img" src="{{url_for('user_img',user_id=current_user.id)}}">
+  </a>
+   {% else %}
+    <i class="fa fa-user-circle-o article-img" style="font-size:65px"  data-toggle="modal" data-target=".img_modal"></i>
+   {% endif %}
+    <div class="media-body">
+      <h2 class="account-heading">{{ current_user.username }}<a class="fa btn fa-edit" data-toggle="modal" data-target=".username_modal"></a></h2>
+      <p class="text-secondary">{{ current_user.email }}<a class="fa btn fa-edit" data-toggle="modal" data-target=".email_modal"></a></p>
+    </div>
+  </div>
+</div>
+<hr>
+
+{% for post in posts %}
+<article class="media content-section mt-5 mb-5">
+    {% if current_user.img %}
+    <a href="{{ url_for('user',username=current_user.username) }}">
+      <img class="rounded-circle article-img" src="{{ url_for('user_img',user_id=current_user.id) }}">
+    </a>
+  {% else %}
+  <i class="fa fa-user-circle-o article-img" style="font-size:65px"></i>
+  {% endif %}
+  <div class="media-body">
+  <div class="article-metadata">
+      <h3><a class="mr-2" href="#">{{ current_user.username }}</a></h3>
+      <small class="text-secondary">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+  </div>
+  <h2><a class="article-title" href="{{url_for('post',post_id=post.id)}}">{{ post.title }}</a></h2>
+  <p class="article-content">{{ post.content }}</p>
+</div>
+</article>
+{% endfor %}
+
+<div class="modal fade username_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-inline col-11" method="POST" action="">
+            {{ username_form.hidden_tag() }}
+            {% if username_form.username.errors %}
+               {{ username_form.username(class="form-control is-invalid",placeholder="Username") }}
+            {{username_form.submit(class="btn btn-outline-success ml-4")}}
+              <div class="invalid-feedback">
+                 {% for error in username_form.username.errors %}
+                    <p class="help-block text-danger">{{ error }}</p>
+                 {% endfor %}
+              </div>
+            {% else %}
+               {{username_form.username(class="form-control",placeholder="Username")}}
+            {{username_form.submit(class="btn btn-outline-success ml-4")}}
+
+            {% endif %}
+          </form>
+          <button type="button" class="close col-1" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="mr-4">&times;</span>
+          </button>          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>  
+<div class="modal fade email_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-inline col-11" method="POST" action="">
+            {{ email_form.hidden_tag() }}
+            {% if email_form.email.errors %}
+               {{ email_form.email(class="form-control is-invalid",placeholder="Email") }}
+            {{email_form.submit(class="btn btn-outline-success ml-4")}}
+
+              <div class="invalid-feedback">
+                 {% for error in email_form.email.errors %}
+                    <p class="help-block text-danger">{{ error }}</p>
+                 {% endfor %}
+              </div>
+            {% else %}
+               {{email_form.email(class="form-control",placeholder="Email")}}
+            {{email_form.submit(class="btn btn-outline-success ml-4")}}
+
+            {% endif %}
+          </form>
+          <button type="button" class="close col-1" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="mr-4">&times;</span>
+          </button>          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<form method="POST" action="" enctype="multipart/form-data">  
+<div class="modal fade img_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-inline " method="POST" action="" enctype="multipart/form-data">
+            {{ img_form.hidden_tag() }}
+             {{ img_form.img(class="form-control-file col-8") }}
+                {% if img_form.img.errors %}
+                 {% for error in img_form.img.errors %}
+                  <span class="text-danger">{{ error }}</span></br>
+                 {% endfor %}
+                {% endif %}
+           {{img_form.submit(class="btn btn-info col-2")}}
+          </form>
+          <button type="button" class="close col-2" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="mr-4 ml-4">&times;</span>
+          </button>          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

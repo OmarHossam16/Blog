@@ -1,0 +1,65 @@
+{% extends 'layout.html' %} {% block content %} {% if current_user.is_authenticated %}
+<div class="clearfix">
+    <button class="btn btn-outline-info" data-toggle="modal" data-target=".post_modal">Post</button>
+</div>
+{% endif %} {% for post in posts.items %}
+<article class="media content-section mt-5 mb-5">
+    {% if post.author.img %}
+    <a href="{{ url_for('user',username=post.author.username) }}">
+		<img class="rounded-circle article-img" src="{{ url_for('user_img',user_id=post.author.id) }}">
+    </a> {% else %}
+    <i class="fa fa-user-circle-o article-img" style="font-size:65px"></i> {% endif %}
+    <div class="media-body">
+        <div class="article-metadata">
+            <h3><a class="mr-2" href="{{ url_for('user',username=post.author.username) }}">{{ post.author.username }}</a></h3>
+            <small class="text-secondary">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        </div>
+        <h2><a class="article-title" href="{{url_for('post',post_id=post.id)}}">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p>
+    </div>
+
+</article>
+{% endfor %}
+<div class="modal fade post_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <form method="POST" action="" class="mt-4">
+                    {{ post_form.hidden_tag() }}
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls">
+                            <label>Title</label> 
+                            {{ post_form.title(class="form-control",placeholder='Title') }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Content</label> 
+                            {{ post_form.content(class="form-control",placeholder='Content',rows='8') }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group text-center">
+                        {{post_form.submit(class="btn btn-outline-primary center-block")}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<center>
+    {% for page in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+     {% if page %} 
+     	{% if posts.page == page %}
+    <a class="btn btn-info mb-4" href="{{ url_for('home', page=page) }}">{{ page }}</a> 
+    	{% else %}
+    <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page) }}">{{ page }}</a> 
+    	{% endif %} 
+     {% else %} ... 
+     {% endif %} 
+    {% endfor %}
+</center>
+{% endblock content %}

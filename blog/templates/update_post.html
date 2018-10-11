@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST" action="">
+   {{ form.hidden_tag() }} 
+   <div class="control-group">
+      <div class="form-group floating-label-form-group controls">
+         <label>Title</label>
+         {{ form.title(class="form-control",placeholder='Title') }}
+      </div>
+   </div>
+   <div class="control-group">
+      <div class="form-group col-xs-12 floating-label-form-group controls">
+         <label>Content</label>
+         {{ form.content(class="form-control",placeholder='Content',rows='8') }}
+      </div>
+   </div>
+   <br>
+
+   <div class="form-group text-center">
+      {{form.submit(class="btn btn-primary center-block")}}
+   </div>
+</form>
+{% endblock content %}
